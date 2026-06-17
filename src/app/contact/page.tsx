@@ -24,7 +24,7 @@ export default function ContactPage() {
               </div>
               <div>
                 <p className="text-[10px] uppercase tracking-widest text-gray-500 mb-2">General Inquiries</p>
-                <p className="text-lg font-playfair">hello@aesthetix.com</p>
+                <p className="text-lg font-playfair">hello@luxepack.com</p>
               </div>
               <div>
                 <p className="text-[10px] uppercase tracking-widest text-gray-500 mb-2">Business Hours</p>

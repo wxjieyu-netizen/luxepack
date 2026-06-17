@@ -13,7 +13,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "AESTHETIX | Bespoke Luxury Packaging Solutions",
+  title: "LUXEPACK | Bespoke Luxury Packaging Solutions",
   description: "One-stop bespoke packaging solutions for luxury beauty, fragrance, and fashion brands. Simple, Premium, Luxury.",
 };
 

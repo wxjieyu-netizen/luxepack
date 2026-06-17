@@ -34,7 +34,7 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <Link href="/" className="text-2xl font-playfair tracking-tighter font-bold">
-          AESTHETIX
+          LUXEPACK
         </Link>
 
         {/* Desktop Nav */}
