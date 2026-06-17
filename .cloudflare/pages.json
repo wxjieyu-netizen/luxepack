@@ -1,0 +1,8 @@
+{
+  "build_command": "npm run build",
+  "build_output_directory": ".next",
+  "root_directory": "",
+  "environment_variables": {
+    "NODE_VERSION": "20"
+  }
+}

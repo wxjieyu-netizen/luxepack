@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AESTHETIX — Luxury Packaging B2B Website
+
+A professional, high-end B2B website for a bespoke luxury packaging company targeting European and American mid-to-high-end brands.
+
+## Tech Stack
+
+- **Framework**: Next.js 16 (App Router, Turbopack)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **Animations**: Framer Motion
+- **Icons**: Lucide React
+- **Deployment**: Cloudflare Pages
+
+## Brand Identity
+
+- **Typography**: Playfair Display (headings) + Inter (body)
+- **Palette**: Rich Black `#0A0A0A` · Champagne Gold `#C5A059` · Minimalist Grey `#F5F5F7`
+- **Philosophy**: Simple · Premium · Luxury
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the site.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
+## Deploy to Cloudflare Pages
 
-To learn more about Next.js, take a look at the following resources:
+1. Push this repository to GitHub.
+2. Go to **Cloudflare Dashboard** → Workers & Pages → Create application → Pages → Connect to Git.
+3. Configure the build settings:
+   - **Framework preset**: `Next.js`
+   - **Build command**: `npm run build`
+   - **Build output directory**: `.next`
+   - **Environment variable**: `NODE_VERSION = 20`
+4. Click **Save and Deploy**.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+├── app/
+│   ├── page.tsx          # Homepage
+│   ├── contact/
+│   │   └── page.tsx      # Contact & Enquiry
+│   ├── layout.tsx
+│   └── globals.css
+├── components/
+│   ├── Navbar.tsx
+│   ├── Hero.tsx
+│   └── Footer.tsx
+└── lib/
+    └── utils.ts
+```
