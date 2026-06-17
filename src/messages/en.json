@@ -1,0 +1,102 @@
+{
+  "common": {
+    "brand": "LUXEPACK",
+    "nav": {
+      "home": "Home",
+      "products": "Products",
+      "about": "About",
+      "sustainability": "Sustainability",
+      "contact": "Contact"
+    }
+  },
+  "hero": {
+    "tagline": "Packaging Aesthetics",
+    "title": "Elevating Brands",
+    "subtitle": "Through Exceptional Packaging",
+    "description": "One-stop luxury packaging solutions for high-end beauty, fragrance, and fashion brands worldwide",
+    "cta": "Start Your Project"
+  },
+  "philosophy": {
+    "title": "Our Philosophy",
+    "description": "We believe packaging is not just a container—it's the first tactile encounter between a brand and its audience."
+  },
+  "products": {
+    "title": "Our Collections",
+    "viewAll": "View All",
+    "giftBoxes": {
+      "name": "Bespoke Gift Boxes",
+      "category": "Rigid Box",
+      "description": "Premium rigid boxes crafted with precision for luxury brands"
+    },
+    "luxuryBags": {
+      "name": "Eco-Luxury Bags",
+      "category": "Recycled Paper",
+      "description": "Sophisticated paper bags combining elegance with sustainability"
+    },
+    "textilePouches": {
+      "name": "Velvet Pouches",
+      "category": "Textile",
+      "description": "Luxurious fabric pouches for jewelry and cosmetics"
+    },
+    "customRibbons": {
+      "name": "Custom Ribbons & Tags",
+      "category": "Branding",
+      "description": "Branded ribbons and tags that add the perfect finishing touch"
+    }
+  },
+  "video": {
+    "title": "Watch Our Craft",
+    "description": "Experience the Art of Luxury Packaging",
+    "caption": "From Design to Delivery: Our Manufacturing Excellence"
+  },
+  "solutions": {
+    "title": "One-Stop Solution",
+    "heading": "From Creative Design to Lean Production",
+    "description": "Our end-to-end service encompasses initial conceptualization, material R&D, and precision manufacturing. We specialize in creating cohesive brand identities through unified packaging sets.",
+    "years": "Years of Craftsmanship",
+    "services": {
+      "creativeStrategy": "Creative Strategy",
+      "materialRD": "Material R&D",
+      "prototyping": "Prototyping",
+      "globalLogistics": "Global Logistics"
+    }
+  },
+  "cta": {
+    "title": "Ready to redefine your brand's unboxing experience?",
+    "button": "Get a Custom Quote"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "heading": "Let's create something extraordinary",
+    "description": "Our specialists are ready to help you navigate the complexities of luxury packaging. Whether you have a clear vision or need creative guidance, we're here to assist.",
+    "office": "Office",
+    "officeAddress": "Global Design Hub, Building 8, Creative District, Shenzhen, China",
+    "inquiries": "General Inquiries",
+    "hours": "Business Hours",
+    "hoursValue": "Mon — Fri: 09:00 - 18:00 (GMT+8)",
+    "form": {
+      "title": "Send an Enquiry",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email Address",
+      "brand": "Brand Name",
+      "projectDetails": "Project Details",
+      "submit": "Submit Enquiry"
+    }
+  },
+  "footer": {
+    "description": "Crafting premium packaging solutions for brands that value aesthetics, quality, and sustainability. Based in the heart of manufacturing, serving the world.",
+    "expertise": "Expertise",
+    "giftBoxes": "Gift Boxes",
+    "luxuryBags": "Luxury Bags",
+    "customRibbons": "Custom Ribbons",
+    "textilePouches": "Textile Pouches",
+    "company": "Company",
+    "ourStory": "Our Story",
+    "contactUs": "Contact Us",
+    "privacy": "Privacy Policy",
+    "connect": "Connect",
+    "inquireAbout": "Inquire about your project",
+    "copyright": "© 2026 LUXEPACK. All Rights Reserved."
+  }
+}

@@ -5,11 +5,10 @@ import { motion } from "framer-motion";
 export default function Hero() {
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden bg-brand-black">
-      {/* Background Image Placeholder with Overlay */}
+      {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0 opacity-60">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-brand-black/80" />
-        {/* You can replace this with a high-quality luxury packaging video or image later */}
-        <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?q=80&w=2000')] bg-cover bg-center" />
+        <div className="w-full h-full bg-[url('https://sc02.alicdn.com/kf/Ac2205b78d92149f287bd578ba0469673j.png')] bg-cover bg-center" />
       </div>
 
       <div className="relative z-10 text-center px-6 max-w-5xl">

@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import images from "@/data/images";
 
 const milestones = [
   { year: "2008", title: "Founded", description: "Started as a small workshop specializing in luxury gift boxes." },

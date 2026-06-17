@@ -5,12 +5,14 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import LanguageSwitcher from "./LanguageSwitcher";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const navLinks = [
-  { name: "Products", href: "/products" },
-  { name: "Sustainability", href: "/sustainability" },
-  { name: "About", href: "/about" },
-  { name: "Contact", href: "/contact" },
+  { nameKey: "common.nav.products", href: "/products", fallback: "Products" },
+  { nameKey: "common.nav.sustainability", href: "/sustainability", fallback: "Sustainability" },
+  { nameKey: "common.nav.about", href: "/about", fallback: "About" },
+  { nameKey: "common.nav.contact", href: "/contact", fallback: "Contact" },
 ];
 
 export default function Navbar() {
@@ -18,6 +20,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
   const isHome = pathname === "/";
+  const { t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -64,16 +67,17 @@ export default function Navbar() {
         <div className="hidden md:flex space-x-10 items-center">
           {navLinks.map((link) => (
             <Link
-              key={link.name}
+              key={link.nameKey}
               href={link.href}
               className={transparentLink(link.href)}
             >
-              {link.name}
+              {t(link.nameKey) !== link.nameKey ? t(link.nameKey) : link.fallback}
               {pathname === link.href && (
                 <span className="absolute -bottom-1 left-0 right-0 h-[1px] bg-brand-gold" />
               )}
             </Link>
           ))}
+          <LanguageSwitcher />
           <Link
             href="/contact"
             className={cn(
@@ -83,7 +87,7 @@ export default function Navbar() {
                 : "border-brand-black text-brand-black hover:bg-brand-black hover:text-white"
             )}
           >
-            Inquire
+            {t("contact.form.submit") !== "contact.form.submit" ? t("contact.form.submit").split(" ")[0] : "Inquire"}
           </Link>
         </div>
 
@@ -105,7 +109,7 @@ export default function Navbar() {
         <div className="absolute top-full left-0 w-full bg-white border-t border-gray-100 flex flex-col p-6 space-y-4 md:hidden shadow-lg">
           {navLinks.map((link) => (
             <Link
-              key={link.name}
+              key={link.nameKey}
               href={link.href}
               className={cn(
                 "text-lg font-playfair hover:text-brand-gold transition-colors",
@@ -113,15 +117,18 @@ export default function Navbar() {
               )}
               onClick={() => setIsOpen(false)}
             >
-              {link.name}
+              {t(link.nameKey) !== link.nameKey ? t(link.nameKey) : link.fallback}
             </Link>
           ))}
+          <div className="pt-4 border-t border-gray-100">
+            <LanguageSwitcher />
+          </div>
           <Link
             href="/contact"
             className="btn-luxury text-center mt-4"
             onClick={() => setIsOpen(false)}
           >
-            Inquire Now
+            {t("contact.form.submit") !== "contact.form.submit" ? t("contact.form.submit") : "Inquire Now"}
           </Link>
         </div>
       )}

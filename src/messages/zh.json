@@ -1,0 +1,102 @@
+{
+  "common": {
+    "brand": "LUXEPACK",
+    "nav": {
+      "home": "首页",
+      "products": "产品",
+      "about": "关于",
+      "sustainability": "可持续发展",
+      "contact": "联系"
+    }
+  },
+  "hero": {
+    "tagline": "包装美学",
+    "title": "提升品牌价值",
+    "subtitle": "通过卓越包装",
+    "description": "为全球高端美妆、香氛及时尚品牌提供一站式奢华包装解决方案",
+    "cta": "开始您的项目"
+  },
+  "philosophy": {
+    "title": "我们的理念",
+    "description": "我们相信，包装不仅仅是容器——它是品牌与受众之间的第一次触感邂逅。"
+  },
+  "products": {
+    "title": "我们的产品系列",
+    "viewAll": "查看全部",
+    "giftBoxes": {
+      "name": "定制礼盒",
+      "category": "硬盒",
+      "description": "为奢华品牌精工打造的优质硬盒"
+    },
+    "luxuryBags": {
+      "name": "环保奢华袋",
+      "category": "再生纸",
+      "description": "将优雅与可持续性完美结合的精致纸袋"
+    },
+    "textilePouches": {
+      "name": "天鹅绒袋",
+      "category": "纺织品",
+      "description": "适用于珠宝和化妆品的奢华织物袋"
+    },
+    "customRibbons": {
+      "name": "定制丝带和标签",
+      "category": "品牌标识",
+      "description": "为包装增添完美点睛之笔的品牌丝带和标签"
+    }
+  },
+  "video": {
+    "title": "观看我们的工艺",
+    "description": "体验奢华包装的艺术",
+    "caption": "从设计到交付：我们的制造卓越"
+  },
+  "solutions": {
+    "title": "一站式解决方案",
+    "heading": "从创意设计到精益生产",
+    "description": "我们的端到端服务涵盖初始概念化、材料研发和精密制造。我们专注于通过统一的包装套装打造一致的品牌形象。",
+    "years": "年匠心工艺",
+    "services": {
+      "creativeStrategy": "创意策略",
+      "materialRD": "材料研发",
+      "prototyping": "原型制作",
+      "globalLogistics": "全球物流"
+    }
+  },
+  "cta": {
+    "title": "准备好重新定义您品牌的开箱体验了吗？",
+    "button": "获取定制报价"
+  },
+  "contact": {
+    "title": "联系我们",
+    "heading": "让我们一起创造非凡",
+    "description": "我们的专家团队随时准备帮助您应对奢华包装的复杂性。无论您有清晰的愿景还是需要创意指导，我们都在这里为您提供帮助。",
+    "office": "办公地址",
+    "officeAddress": "中国深圳创意区8号楼全球设计中心",
+    "inquiries": "商务咨询",
+    "hours": "营业时间",
+    "hoursValue": "周一至周五：09:00 - 18:00 (GMT+8)",
+    "form": {
+      "title": "发送询价",
+      "firstName": "名",
+      "lastName": "姓",
+      "email": "电子邮件",
+      "brand": "品牌名称",
+      "projectDetails": "项目详情",
+      "submit": "提交询价"
+    }
+  },
+  "footer": {
+    "description": "为注重美学、品质和可持续发展的品牌打造优质包装解决方案。立足制造业中心，服务全球客户。",
+    "expertise": "专业领域",
+    "giftBoxes": "礼品盒",
+    "luxuryBags": "奢华袋",
+    "customRibbons": "定制丝带",
+    "textilePouches": "纺织品袋",
+    "company": "公司",
+    "ourStory": "我们的故事",
+    "contactUs": "联系我们",
+    "privacy": "隐私政策",
+    "connect": "联系方式",
+    "inquireAbout": "咨询您的项目",
+    "copyright": "© 2026 LUXEPACK. 版权所有。"
+  }
+}
