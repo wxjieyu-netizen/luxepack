@@ -60,7 +60,7 @@ export default function Navbar() {
             isHome && !isScrolled ? "text-white" : "text-brand-black"
           )}
         >
-          LUXEPACK
+          ELAPACK
         </Link>
 
         {/* Desktop Nav */}

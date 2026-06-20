@@ -1,6 +1,6 @@
 {
   "common": {
-    "brand": "LUXEPACK",
+    "brand": "ELAPACK",
     "nav": {
       "home": "首页",
       "products": "产品",
@@ -97,6 +97,6 @@
     "privacy": "隐私政策",
     "connect": "联系方式",
     "inquireAbout": "咨询您的项目",
-    "copyright": "© 2026 LUXEPACK. 版权所有。"
+    "copyright": "© 2026 ELAPACK. 版权所有。"
   }
 }

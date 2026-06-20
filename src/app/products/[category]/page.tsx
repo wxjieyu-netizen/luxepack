@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: CategoryPageProps) {
   const cat = categories.find((c) => c.slug === category);
   if (!cat) return {};
   return {
-    title: `${cat.name} | LUXEPACK`,
+    title: `${cat.name} | ELAPACK`,
     description: cat.description,
   };
 }

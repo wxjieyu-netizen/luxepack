@@ -38,7 +38,7 @@ export default function ContactPage() {
                 <p className="text-[10px] uppercase tracking-widest text-gray-500 mb-2">
                   {t("contact.inquiries") !== "contact.inquiries" ? t("contact.inquiries") : "General Inquiries"}
                 </p>
-                <p className="text-lg font-playfair">hello@luxepack.com</p>
+                <p className="text-lg font-playfair">hello@elapack.com</p>
               </div>
               <div>
                 <p className="text-[10px] uppercase tracking-widest text-gray-500 mb-2">

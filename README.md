@@ -1,4 +1,4 @@
-# LUXEPACK — Luxury Packaging B2B Website
+# ELAPACK — Luxury Packaging B2B Website
 
 A professional, high-end B2B website for a bespoke luxury packaging company targeting European and American mid-to-high-end brands.
 
