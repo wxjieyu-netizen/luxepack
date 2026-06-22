@@ -1,21 +1,10 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-playfair",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-});
-
 export const metadata: Metadata = {
-  title: "ELAPACK | Bespoke Luxury Packaging Solutions",
-  description: "One-stop bespoke packaging solutions for luxury beauty, fragrance, and fashion brands. Simple, Premium, Luxury.",
+  title: "ELAPACK | Premium Packaging Solutions",
+  description: "One-stop premium packaging solutions for global luxury beauty, fragrance and fashion brands.",
 };
 
 export default function RootLayout({
@@ -24,8 +13,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
-      <body className="font-inter antialiased">
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="antialiased bg-white text-brand-black">
         <LanguageProvider>
           {children}
         </LanguageProvider>
