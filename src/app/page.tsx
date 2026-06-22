@@ -3,6 +3,7 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Footer from "@/components/Footer";
+import FloatingCTA from "@/components/FloatingCTA";
 import images from "@/data/images";
 import Link from "next/link";
 import { useState } from "react";
