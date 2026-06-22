@@ -172,21 +172,12 @@ export default function Home() {
 
           {/* Partner Brand Showcase — full width image */}
           <FadeIn>
-            <div className="relative overflow-hidden aspect-[21/6]">
-              <img src={images.brandShowcase} alt="Partner Brands" className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center px-6">
-                <span className="section-label !text-brand-sage-light">Our Partners</span>
-                <h3 className="font-playfair text-white text-4xl md:text-5xl tracking-tight mb-8">
-                  Trusted by the World's Finest Brands
-                </h3>
-                <div className="flex flex-wrap justify-center gap-8 md:gap-16">
-                  {partners.map((p) => (
-                    <span key={p} className="text-white/60 text-xs uppercase tracking-[0.3em] font-semibold hover:text-white transition-colors">
-                      {p}
-                    </span>
-                  ))}
-                </div>
-              </div>
+            <div className="relative overflow-hidden">
+              <img
+                src="https://sc02.alicdn.com/kf/H0e6e3afa697c4e5a9b29ddd6ed9c46f9B.png"
+                alt="Our Partner Brands"
+                className="w-full object-contain"
+              />
             </div>
           </FadeIn>
         </div>
