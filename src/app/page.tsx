@@ -170,7 +170,11 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Partner Brand Showcase — full width image */}
+          {/* Partner Brand Showcase */}
+          <FadeIn className="text-center mb-10">
+            <span className="section-label">Our Partners</span>
+            <h2 className="section-title">Trusted by the World's Finest Brands</h2>
+          </FadeIn>
           <FadeIn>
             <div className="relative overflow-hidden">
               <img
