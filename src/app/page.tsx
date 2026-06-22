@@ -174,7 +174,7 @@ export default function Home() {
           <FadeIn>
             <div className="relative overflow-hidden">
               <img
-                src="https://sc02.alicdn.com/kf/H0e6e3afa697c4e5a9b29ddd6ed9c46f9B.png"
+                src="https://sc02.alicdn.com/kf/Hc8e3ba7fa8e44c2d827b18643e6f1ea5Y.png"
                 alt="Our Partner Brands"
                 className="w-full object-contain"
               />
