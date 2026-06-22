@@ -1,15 +1,37 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { useLanguage } from "@/contexts/LanguageContext";
 
+const productCategories = [
+  {
+    name: "Pouch & Bag",
+    href: "/products/luxury-bags",
+    description: "Eco-luxury shopping bags & textile pouches",
+  },
+  {
+    name: "Box",
+    href: "/products/gift-boxes",
+    description: "Bespoke rigid gift boxes",
+  },
+  {
+    name: "Cleaning Cloth",
+    href: "/products/cleaning-cloth",
+    description: "Premium branded microfibre cloths",
+  },
+  {
+    name: "Ribbon & Tags",
+    href: "/products/custom-ribbons",
+    description: "Custom satin ribbons & hangtags",
+  },
+];
+
 const navLinks = [
-  { nameKey: "common.nav.products", href: "/products", fallback: "Products" },
   { nameKey: "common.nav.sustainability", href: "/sustainability", fallback: "Sustainability" },
   { nameKey: "common.nav.about", href: "/about", fallback: "About" },
   { nameKey: "common.nav.contact", href: "/contact", fallback: "Contact" },
@@ -18,9 +40,12 @@ const navLinks = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [productsOpen, setProductsOpen] = useState(false);
+  const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
   const pathname = usePathname();
   const isHome = pathname === "/";
   const { t } = useLanguage();
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -31,16 +56,29 @@ export default function Navbar() {
   useEffect(() => {
     if (isOpen) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "";
-    return () => {
-      document.body.style.overflow = "";
-    };
+    return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
 
-  const transparentLink = (href: string) =>
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setProductsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const isProductActive = pathname.startsWith("/products");
+
+  const linkColor = (active: boolean) =>
     cn(
       "text-sm uppercase tracking-widest font-medium transition-colors relative",
-      isHome && !isScrolled ? "text-white hover:text-brand-gold" : "text-brand-black hover:text-brand-gold",
-      pathname === href && "text-brand-gold"
+      isHome && !isScrolled
+        ? "text-white hover:text-brand-gold"
+        : "text-brand-black hover:text-brand-gold",
+      active && "text-brand-gold"
     );
 
   return (
@@ -53,6 +91,7 @@ export default function Navbar() {
       )}
     >
       <div className="max-w-7xl mx-auto flex justify-between items-center">
+        {/* Logo */}
         <Link
           href="/"
           className={cn(
@@ -65,11 +104,78 @@ export default function Navbar() {
 
         {/* Desktop Nav */}
         <div className="hidden md:flex space-x-10 items-center">
+
+          {/* Products with dropdown */}
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={() => setProductsOpen(!productsOpen)}
+              onMouseEnter={() => setProductsOpen(true)}
+              className={cn(
+                "flex items-center gap-1 text-sm uppercase tracking-widest font-medium transition-colors",
+                isHome && !isScrolled
+                  ? "text-white hover:text-brand-gold"
+                  : "text-brand-black hover:text-brand-gold",
+                isProductActive && "text-brand-gold"
+              )}
+            >
+              {t("common.nav.products") !== "common.nav.products" ? t("common.nav.products") : "Products"}
+              <ChevronDown
+                size={14}
+                className={cn("transition-transform duration-300", productsOpen && "rotate-180")}
+              />
+              {isProductActive && (
+                <span className="absolute -bottom-1 left-0 right-0 h-[1px] bg-brand-gold" />
+              )}
+            </button>
+
+            {/* Dropdown panel */}
+            {productsOpen && (
+              <div
+                className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-72 bg-white shadow-2xl border-t-2 border-brand-gold"
+                onMouseLeave={() => setProductsOpen(false)}
+              >
+                {/* Arrow */}
+                <div className="absolute -top-[7px] left-1/2 -translate-x-1/2 w-3 h-3 bg-white border-t-2 border-l-2 border-brand-gold rotate-45" />
+
+                <div className="py-2">
+                  {productCategories.map((cat, i) => (
+                    <Link
+                      key={cat.href}
+                      href={cat.href}
+                      onClick={() => setProductsOpen(false)}
+                      className={cn(
+                        "flex flex-col px-6 py-4 hover:bg-brand-grey group transition-colors",
+                        i !== productCategories.length - 1 && "border-b border-gray-100"
+                      )}
+                    >
+                      <span className="text-xs uppercase tracking-widest font-bold text-brand-black group-hover:text-brand-gold transition-colors">
+                        {cat.name}
+                      </span>
+                      <span className="text-[11px] text-gray-400 mt-1 font-light">
+                        {cat.description}
+                      </span>
+                    </Link>
+                  ))}
+
+                  {/* View All */}
+                  <Link
+                    href="/products"
+                    onClick={() => setProductsOpen(false)}
+                    className="flex items-center justify-center gap-2 px-6 py-4 bg-brand-black text-white hover:bg-brand-gold transition-colors text-xs uppercase tracking-widest font-bold"
+                  >
+                    View All Collections →
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Other nav links */}
           {navLinks.map((link) => (
             <Link
               key={link.nameKey}
               href={link.href}
-              className={transparentLink(link.href)}
+              className={linkColor(pathname === link.href)}
             >
               {t(link.nameKey) !== link.nameKey ? t(link.nameKey) : link.fallback}
               {pathname === link.href && (
@@ -77,7 +183,9 @@ export default function Navbar() {
               )}
             </Link>
           ))}
+
           <LanguageSwitcher />
+
           <Link
             href="/contact"
             className={cn(
@@ -87,7 +195,7 @@ export default function Navbar() {
                 : "border-brand-black text-brand-black hover:bg-brand-black hover:text-white"
             )}
           >
-            {t("contact.form.submit") !== "contact.form.submit" ? t("contact.form.submit").split(" ")[0] : "Inquire"}
+            Inquire
           </Link>
         </div>
 
@@ -106,13 +214,58 @@ export default function Navbar() {
 
       {/* Mobile Nav */}
       {isOpen && (
-        <div className="absolute top-full left-0 w-full bg-white border-t border-gray-100 flex flex-col p-6 space-y-4 md:hidden shadow-lg">
+        <div className="absolute top-full left-0 w-full bg-white border-t border-gray-100 flex flex-col md:hidden shadow-lg max-h-[80vh] overflow-y-auto">
+
+          {/* Mobile Products accordion */}
+          <div className="border-b border-gray-100">
+            <button
+              onClick={() => setMobileProductsOpen(!mobileProductsOpen)}
+              className="flex items-center justify-between w-full px-6 py-4 text-lg font-playfair hover:text-brand-gold transition-colors"
+            >
+              <span className={isProductActive ? "text-brand-gold" : ""}>
+                {t("common.nav.products") !== "common.nav.products" ? t("common.nav.products") : "Products"}
+              </span>
+              <ChevronDown
+                size={18}
+                className={cn("transition-transform duration-300", mobileProductsOpen && "rotate-180")}
+              />
+            </button>
+
+            {mobileProductsOpen && (
+              <div className="bg-brand-grey">
+                {productCategories.map((cat) => (
+                  <Link
+                    key={cat.href}
+                    href={cat.href}
+                    onClick={() => { setIsOpen(false); setMobileProductsOpen(false); }}
+                    className="flex flex-col px-8 py-3 border-b border-gray-200 hover:text-brand-gold transition-colors"
+                  >
+                    <span className="text-xs uppercase tracking-widest font-bold">
+                      {cat.name}
+                    </span>
+                    <span className="text-[11px] text-gray-400 mt-0.5 font-light">
+                      {cat.description}
+                    </span>
+                  </Link>
+                ))}
+                <Link
+                  href="/products"
+                  onClick={() => { setIsOpen(false); setMobileProductsOpen(false); }}
+                  className="block px-8 py-3 text-xs uppercase tracking-widest font-bold text-brand-gold"
+                >
+                  View All →
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* Other links */}
           {navLinks.map((link) => (
             <Link
               key={link.nameKey}
               href={link.href}
               className={cn(
-                "text-lg font-playfair hover:text-brand-gold transition-colors",
+                "px-6 py-4 text-lg font-playfair hover:text-brand-gold transition-colors border-b border-gray-100",
                 pathname === link.href && "text-brand-gold"
               )}
               onClick={() => setIsOpen(false)}
@@ -120,15 +273,17 @@ export default function Navbar() {
               {t(link.nameKey) !== link.nameKey ? t(link.nameKey) : link.fallback}
             </Link>
           ))}
-          <div className="pt-4 border-t border-gray-100">
+
+          <div className="px-6 py-4 border-b border-gray-100">
             <LanguageSwitcher />
           </div>
+
           <Link
             href="/contact"
-            className="btn-luxury text-center mt-4"
+            className="btn-luxury text-center mx-6 my-4"
             onClick={() => setIsOpen(false)}
           >
-            {t("contact.form.submit") !== "contact.form.submit" ? t("contact.form.submit") : "Inquire Now"}
+            Inquire Now
           </Link>
         </div>
       )}
