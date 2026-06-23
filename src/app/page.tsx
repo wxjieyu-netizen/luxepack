@@ -6,13 +6,14 @@ import Footer from "@/components/Footer";
 import FloatingCTA from "@/components/FloatingCTA";
 import images from "@/data/images";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ChevronDown, Award, Globe, Layers, Zap, ShieldCheck, Leaf } from "lucide-react";
+import { client, urlFor, hotProductsQuery, newProductsQuery, faqQuery, teamQuery, newsQuery, certsQuery } from "@/lib/sanity";
 
-// ─── Data ────────────────────────────────────────────────────────────────────
+// ─── Fallback Static Data (Shown if Sanity is empty) ──────────────────────────
 
-const hotProducts = [
+const fallbackHotProducts = [
   { title: "Velvet Drawstring Pouch",  category: "Pouch & Bag",    img: images.prod1 },
   { title: "Magnetic Gift Box",        category: "Box",             img: images.prod2 },
   { title: "Custom Cleaning Cloth",    category: "Cleaning Cloth",  img: images.prod3 },
@@ -21,7 +22,7 @@ const hotProducts = [
   { title: "Drawer Slide Box",         category: "Box",             img: images.prod6 },
 ];
 
-const newProducts = [
+const fallbackNewProducts = [
   { title: "Frosted Rigid Box",        category: "Box",             img: images.giftBoxOpen },
   { title: "Eco Canvas Tote",          category: "Pouch & Bag",     img: images.kraftBag },
   { title: "Woven Logo Ribbon",        category: "Ribbon & Tags",   img: images.satinRibbon },
@@ -51,48 +52,10 @@ const industries = [
   "Premium Skincare", "Gourmet & Food", "Electronics", "Wellness & Spa",
 ];
 
-const team = [
-  { name: "Sarah Chen",    role: "Head of Design",       img: null },
-  { name: "James Liu",     role: "Production Director",  img: null },
-  { name: "Mia Zhang",     role: "Quality Manager",      img: null },
-  { name: "Tom Wang",      role: "Global Sales Lead",    img: null },
-];
+const partners = [ "CHANEL", "DIOR", "HERMÈS", "GUCCI", "YSL", "BURBERRY", "LOEWE", "CELINE" ];
 
-const certs = [
-  { title: "FSC Certified",   sub: "Forest Stewardship Council" },
-  { title: "ISO 9001",        sub: "Quality Management System" },
-  { title: "ISO 14001",       sub: "Environmental Management" },
-  { title: "REACH Compliant", sub: "EU Chemical Safety" },
-  { title: "SEDEX Member",    sub: "Ethical Trade Audit" },
-  { title: "SGS Tested",      sub: "Third-Party Lab Verification" },
-];
+// ─── Components ───────────────────────────────────────────────────────────────
 
-const faqs = [
-  { q: "What is your minimum order quantity?",
-    a: "MOQ starts from 500 pcs for most products. For custom projects we recommend starting with a paid sample." },
-  { q: "How long does sampling take?",
-    a: "Standard samples are ready within 7 business days. Complex custom dies or special materials may take 10–14 days." },
-  { q: "Do you offer eco-friendly packaging options?",
-    a: "Yes. We offer FSC-certified paper, soy-based inks, biodegradable films, and fully recyclable constructions." },
-  { q: "Can you handle large volume orders?",
-    a: "Our facility runs three dedicated production lines and can handle orders from 500 to 500,000 units per run." },
-  { q: "Do you sign NDAs to protect my designs?",
-    a: "Absolutely. We sign a mutual NDA before any design files are shared and maintain strict IP confidentiality." },
-  { q: "What file formats do you accept for artwork?",
-    a: "We accept AI, PDF, EPS (vector preferred). Our design team can also produce dielines from your references." },
-];
-
-const news = [
-  { date: "Jun 2025", category: "Trend",    title: "Sage Green Takes Over Luxury Packaging in 2025",     img: images.productFlatlay },
-  { date: "May 2025", category: "Guide",    title: "How to Choose the Right Packaging MOQ for Your Brand",img: images.craftsmanship },
-  { date: "Apr 2025", category: "News",     title: "ELAPACK Achieves ISO 14001 Environmental Certification",img: images.sustainable },
-];
-
-const partners = [
-  "CHANEL", "DIOR", "HERMÈS", "GUCCI", "YSL", "BURBERRY", "LOEWE", "CELINE",
-];
-
-// ─── Fade-in wrapper ──────────────────────────────────────────────────────────
 const FadeIn = ({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) => (
   <motion.div
     initial={{ opacity: 0, y: 24 }}
@@ -105,7 +68,6 @@ const FadeIn = ({ children, delay = 0, className = "" }: { children: React.React
   </motion.div>
 );
 
-// ─── FAQ Item ─────────────────────────────────────────────────────────────────
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
@@ -124,13 +86,45 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
+// ─── Main Page ────────────────────────────────────────────────────────────────
+
 export default function Home() {
+  const [hotProducts, setHotProducts] = useState<any[]>([]);
+  const [newProducts, setNewProducts] = useState<any[]>([]);
+  const [faqs, setFaqs] = useState<any[]>([]);
+  const [team, setTeam] = useState<any[]>([]);
+  const [news, setNews] = useState<any[]>([]);
+  const [certs, setCerts] = useState<any[]>([]);
+
+  useEffect(() => {
+    // Fetch data from Sanity
+    const fetchData = async () => {
+      try {
+        const [hotData, newData, faqData, teamData, newsData, certData] = await Promise.all([
+          client.fetch(hotProductsQuery),
+          client.fetch(newProductsQuery),
+          client.fetch(faqQuery),
+          client.fetch(teamQuery),
+          client.fetch(newsQuery),
+          client.fetch(certsQuery),
+        ]);
+        
+        if (hotData?.length > 0) setHotProducts(hotData);
+        if (newData?.length > 0) setNewProducts(newData);
+        if (faqData?.length > 0) setFaqs(faqData);
+        if (teamData?.length > 0) setTeam(teamData);
+        if (newsData?.length > 0) setNews(newsData);
+        if (certData?.length > 0) setCerts(certData);
+      } catch (err) {
+        console.error("Sanity fetch error:", err);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <main className="min-h-screen bg-white font-montserrat">
       <Navbar />
-
-      {/* ① Hero — full screen */}
       <Hero />
 
       {/* ② About Us */}
@@ -138,10 +132,9 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <FadeIn className="text-center mb-16">
             <span className="section-label">About Us</span>
-            <h2 className="section-title">Factory Strength & Craftsmanship</h2>
+            <h2 className="font-playfair text-5xl md:text-7xl tracking-tight leading-tight">Factory Strength & Craftsmanship</h2>
           </FadeIn>
 
-          {/* Factory images grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
             <FadeIn className="md:col-span-2 aspect-[16/9] overflow-hidden" delay={0.1}>
               <img src={images.factory} alt="Factory" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
@@ -156,7 +149,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Stats row */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20 text-center">
             {[
               { v: "15+",    l: "Years of Excellence" },
@@ -165,16 +157,15 @@ export default function Home() {
               { v: "200+",   l: "Skilled Artisans" },
             ].map((s) => (
               <FadeIn key={s.l}>
-                <p className="font-playfair text-5xl text-brand-sage mb-2">{s.v}</p>
+                <p className="font-playfair text-6xl text-brand-sage mb-2">{s.v}</p>
                 <p className="text-xs uppercase tracking-widest text-brand-grey">{s.l}</p>
               </FadeIn>
             ))}
           </div>
 
-          {/* Partner Brand Showcase */}
           <FadeIn className="text-center mb-10">
             <span className="section-label">Our Partners</span>
-            <h2 className="section-title">Trusted by the World's Finest Brands</h2>
+            <h2 className="font-playfair text-5xl md:text-7xl tracking-tight leading-tight">Trusted by the World's Finest Brands</h2>
           </FadeIn>
           <FadeIn>
             <div className="relative overflow-hidden">
@@ -193,7 +184,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <FadeIn className="text-center mb-16">
             <span className="section-label">Why Choose Us</span>
-            <h2 className="section-title">Our Core Value Advantages</h2>
+            <h2 className="font-playfair text-5xl md:text-7xl tracking-tight leading-tight">Our Core Value Advantages</h2>
           </FadeIn>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {coreValues.map(({ icon: Icon, title, desc }, i) => (
@@ -211,26 +202,24 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ④ Hot Products — 2 rows × 3 cols */}
+      {/* ④ Hot Products */}
       <section id="hot-products" className="py-28 px-6 bg-white">
         <div className="max-w-7xl mx-auto">
           <FadeIn className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4">
             <div>
               <span className="section-label">Hot Products</span>
-              <h2 className="section-title">Bestselling Collections</h2>
+              <h2 className="font-playfair text-5xl md:text-7xl tracking-tight leading-tight">Bestselling Collections</h2>
             </div>
-            <Link href="/products" className="btn-outline self-start md:self-auto">
-              View All →
-            </Link>
+            <Link href="/products" className="btn-outline self-start md:self-auto">View All →</Link>
           </FadeIn>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-            {hotProducts.map((p, i) => (
-              <FadeIn key={p.title} delay={i * 0.07}>
+            {(hotProducts.length > 0 ? hotProducts : fallbackHotProducts).map((p, i) => (
+              <FadeIn key={p._id || p.title} delay={i * 0.07}>
                 <div className="group cursor-pointer">
                   <div className="aspect-[3/4] overflow-hidden bg-brand-grey-light mb-4 relative">
                     <img
-                      src={p.img}
+                      src={p.image ? urlFor(p.image).width(600).url() : p.img}
                       alt={p.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
@@ -247,40 +236,38 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ⑤ Full-screen divider image */}
+      {/* ⑤ Full-screen divider */}
       <section className="relative h-[60vh] overflow-hidden">
         <img src={images.lifestyle} alt="Lifestyle" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-center px-6">
           <FadeIn>
             <p className="text-white/70 uppercase tracking-[0.5em] text-xs mb-4">Our Promise</p>
-            <h2 className="font-playfair text-white text-4xl md:text-6xl tracking-tight max-w-3xl">
+            <h2 className="font-playfair text-white text-5xl md:text-7xl tracking-tight max-w-3xl">
               Every box tells your brand's story.
             </h2>
           </FadeIn>
         </div>
       </section>
 
-      {/* ⑥ New Products — 1 row × 4 cols */}
+      {/* ⑥ New Arrivals */}
       <section id="new-products" className="py-28 px-6 bg-brand-grey-light">
         <div className="max-w-7xl mx-auto">
           <FadeIn className="text-center mb-16">
             <span className="section-label">New Arrivals</span>
-            <h2 className="section-title">Latest Product Releases</h2>
+            <h2 className="font-playfair text-5xl md:text-7xl tracking-tight leading-tight">Latest Product Releases</h2>
           </FadeIn>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {newProducts.map((p, i) => (
-              <FadeIn key={p.title} delay={i * 0.08}>
+            {(newProducts.length > 0 ? newProducts : fallbackNewProducts).map((p, i) => (
+              <FadeIn key={p._id || p.title} delay={i * 0.08}>
                 <div className="group cursor-pointer">
                   <div className="aspect-[3/4] overflow-hidden bg-white mb-4 border border-brand-grey-mid group-hover:border-brand-sage transition-colors relative">
                     <img
-                      src={p.img}
+                      src={p.image ? urlFor(p.image).width(500).url() : p.img}
                       alt={p.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
-                    <div className="absolute top-0 right-0 bg-brand-sage text-white text-[9px] uppercase tracking-widest px-2 py-1 font-semibold">
-                      New
-                    </div>
+                    <div className="absolute top-0 right-0 bg-brand-sage text-white text-[9px] uppercase tracking-widest px-2 py-1 font-semibold">New</div>
                   </div>
                   <span className="text-[10px] uppercase tracking-widest text-brand-sage font-semibold block mb-1">{p.category}</span>
                   <h4 className="font-semibold text-sm uppercase tracking-wide group-hover:text-brand-sage transition-colors">{p.title}</h4>
@@ -296,13 +283,11 @@ export default function Home() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
           <FadeIn className="sticky top-24">
             <span className="section-label">Our Services</span>
-            <h2 className="section-title mb-6">End-to-End Packaging Excellence</h2>
+            <h2 className="font-playfair text-5xl md:text-7xl tracking-tight leading-tight mb-6">End-to-End Packaging Excellence</h2>
             <p className="text-brand-grey text-base font-light leading-relaxed mb-8">
               From the first sketch to your customer's doorstep — we handle every step of the packaging journey with precision and care.
             </p>
-            <Link href="/contact" className="btn-primary inline-block">
-              Discuss Your Project
-            </Link>
+            <Link href="/contact" className="btn-primary inline-block">Discuss Your Project</Link>
           </FadeIn>
 
           <div className="space-y-0">
@@ -323,14 +308,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ⑧ Industries We Serve */}
+      {/* ⑧ Industries */}
       <section id="industries" className="py-28 px-6 bg-brand-sage">
         <div className="max-w-7xl mx-auto text-center">
           <FadeIn>
             <span className="text-white/60 uppercase tracking-[0.4em] text-xs font-semibold mb-4 block">Industries We Serve</span>
-            <h2 className="font-playfair text-white text-4xl md:text-5xl tracking-tight mb-16">
-              Packaging for Every Premium Market
-            </h2>
+            <h2 className="font-playfair text-white text-5xl md:text-7xl tracking-tight mb-16">Packaging for Every Premium Market</h2>
           </FadeIn>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {industries.map((ind, i) => (
@@ -349,22 +332,28 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <FadeIn className="text-center mb-16">
             <span className="section-label">Our Team</span>
-            <h2 className="section-title">The People Behind the Craft</h2>
+            <h2 className="font-playfair text-5xl md:text-7xl tracking-tight leading-tight">The People Behind the Craft</h2>
           </FadeIn>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {team.map((m, i) => (
-              <FadeIn key={m.name} delay={i * 0.08}>
+            {(team.length > 0 ? team : [
+              { name: "Sarah Chen", role: "Head of Design" },
+              { name: "James Liu", role: "Production Director" },
+              { name: "Mia Zhang", role: "Quality Manager" },
+              { name: "Tom Wang", role: "Global Sales Lead" }
+            ]).map((m, i) => (
+              <FadeIn key={m._id || m.name} delay={i * 0.08}>
                 <div className="group text-center">
-                  {/* Image placeholder */}
                   <div className="aspect-[3/4] bg-brand-grey-light mb-4 overflow-hidden border border-brand-grey-mid group-hover:border-brand-sage transition-colors flex items-center justify-center">
-                    <div className="text-brand-grey-mid text-center px-4">
-                      <div className="w-16 h-16 rounded-full bg-brand-sage/20 mx-auto mb-3 flex items-center justify-center">
-                        <span className="text-brand-sage font-playfair text-2xl">
-                          {m.name.charAt(0)}
-                        </span>
+                    {m.photo ? (
+                      <img src={urlFor(m.photo).width(400).url()} alt={m.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="text-brand-grey-mid text-center px-4">
+                        <div className="w-16 h-16 rounded-full bg-brand-sage/20 mx-auto mb-3 flex items-center justify-center">
+                          <span className="text-brand-sage font-playfair text-2xl">{m.name.charAt(0)}</span>
+                        </div>
+                        <p className="text-[10px] uppercase tracking-widest text-brand-grey">Photo Placeholder</p>
                       </div>
-                      <p className="text-[10px] uppercase tracking-widest text-brand-grey">Photo Placeholder</p>
-                    </div>
+                    )}
                   </div>
                   <h4 className="font-semibold uppercase tracking-wide text-sm group-hover:text-brand-sage transition-colors">{m.name}</h4>
                   <p className="text-brand-grey text-xs font-light mt-1">{m.role}</p>
@@ -380,27 +369,32 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <FadeIn className="text-center mb-16">
             <span className="section-label">Certifications</span>
-            <h2 className="section-title">Verified Quality Standards</h2>
+            <h2 className="font-playfair text-5xl md:text-7xl tracking-tight leading-tight">Verified Quality Standards</h2>
           </FadeIn>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {certs.map((c, i) => (
-              <FadeIn key={c.title} delay={i * 0.06}>
+            {(certs.length > 0 ? certs : [
+              { title: "FSC Certified", sub: "Forest Stewardship Council" },
+              { title: "ISO 9001", sub: "Quality Management System" },
+              { title: "ISO 14001", sub: "Environmental Management" },
+              { title: "REACH Compliant", sub: "EU Chemical Safety" },
+              { title: "SEDEX Member", sub: "Ethical Trade Audit" },
+              { title: "SGS Tested", sub: "Third-Party Lab Verification" },
+            ]).map((c, i) => (
+              <FadeIn key={c._id || c.title} delay={i * 0.06}>
                 <div className="bg-white border border-brand-grey-mid hover:border-brand-sage transition-colors p-6 text-center group aspect-square flex flex-col items-center justify-center">
-                  {/* Certificate image placeholder */}
-                  <div className="w-12 h-12 rounded-full bg-brand-sage/10 flex items-center justify-center mb-4 group-hover:bg-brand-sage/20 transition-colors">
-                    <Award size={20} className="text-brand-sage" />
-                  </div>
+                  {c.image ? (
+                    <img src={urlFor(c.image).width(150).url()} alt={c.title} className="w-12 h-12 object-contain mb-4" />
+                  ) : (
+                    <div className="w-12 h-12 rounded-full bg-brand-sage/10 flex items-center justify-center mb-4 group-hover:bg-brand-sage/20 transition-colors">
+                      <Award size={20} className="text-brand-sage" />
+                    </div>
+                  )}
                   <p className="font-semibold text-xs uppercase tracking-wide mb-1 group-hover:text-brand-sage transition-colors">{c.title}</p>
-                  <p className="text-[10px] text-brand-grey font-light text-center">{c.sub}</p>
+                  <p className="text-[10px] text-brand-grey font-light text-center">{c.sub || c.subtitle}</p>
                 </div>
               </FadeIn>
             ))}
           </div>
-          <FadeIn className="mt-8 text-center">
-            <p className="text-brand-grey text-sm font-light">
-              Certificate images can be uploaded here. <Link href="/contact" className="text-brand-sage underline underline-offset-4">Contact us</Link> to request audit reports.
-            </p>
-          </FadeIn>
         </div>
       </section>
 
@@ -409,39 +403,38 @@ export default function Home() {
         <div className="max-w-3xl mx-auto">
           <FadeIn className="text-center mb-16">
             <span className="section-label">FAQ</span>
-            <h2 className="section-title">Frequently Asked Questions</h2>
+            <h2 className="font-playfair text-5xl md:text-7xl tracking-tight leading-tight">Frequently Asked Questions</h2>
           </FadeIn>
           <div>
-            {faqs.map((f) => (
-              <FaqItem key={f.q} q={f.q} a={f.a} />
+            {(faqs.length > 0 ? faqs : [
+              { question: "What is your minimum order quantity?", answer: "MOQ starts from 500 pcs for most products." },
+              { question: "How long does sampling take?", answer: "Standard samples are ready within 7 business days." }
+            ]).map((f) => (
+              <FaqItem key={f._id || f.question} q={f.question} a={f.answer} />
             ))}
           </div>
-          <FadeIn className="mt-12 text-center">
-            <p className="text-brand-grey text-sm mb-4">Still have questions?</p>
-            <Link href="/contact" className="btn-primary inline-block">
-              Contact Our Team
-            </Link>
-          </FadeIn>
         </div>
       </section>
 
-      {/* ⑫ News & Articles */}
+      {/* ⑫ News */}
       <section id="news" className="py-28 px-6 bg-brand-grey-light">
         <div className="max-w-7xl mx-auto">
           <FadeIn className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4">
             <div>
               <span className="section-label">News & Articles</span>
-              <h2 className="section-title">Insights from ELAPACK</h2>
+              <h2 className="font-playfair text-5xl md:text-7xl tracking-tight leading-tight">Insights from ELAPACK</h2>
             </div>
             <button className="btn-outline self-start md:self-auto">View All Articles →</button>
           </FadeIn>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {news.map((n, i) => (
-              <FadeIn key={n.title} delay={i * 0.1}>
+            {(news.length > 0 ? news : [
+              { category: "Trend", title: "Sage Green Takes Over Luxury Packaging", img: images.productFlatlay, date: "Jun 2025" }
+            ]).map((n, i) => (
+              <FadeIn key={n._id || n.title} delay={i * 0.1}>
                 <article className="bg-white group cursor-pointer border border-brand-grey-mid hover:border-brand-sage transition-colors">
                   <div className="aspect-video overflow-hidden">
                     <img
-                      src={n.img}
+                      src={n.coverImage ? urlFor(n.coverImage).width(600).url() : n.img}
                       alt={n.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
@@ -449,7 +442,7 @@ export default function Home() {
                   <div className="p-6">
                     <div className="flex items-center gap-3 mb-3">
                       <span className="text-[10px] bg-brand-sage/10 text-brand-sage px-2 py-1 uppercase tracking-widest font-semibold">{n.category}</span>
-                      <span className="text-[10px] text-brand-grey uppercase tracking-widest">{n.date}</span>
+                      <span className="text-[10px] text-brand-grey uppercase tracking-widest">{n.publishedAt || n.date}</span>
                     </div>
                     <h3 className="font-semibold text-sm uppercase tracking-wide leading-snug group-hover:text-brand-sage transition-colors">{n.title}</h3>
                   </div>
@@ -464,39 +457,16 @@ export default function Home() {
       <section className="py-24 px-6 bg-brand-black text-white text-center">
         <FadeIn>
           <span className="text-brand-sage uppercase tracking-[0.4em] text-xs font-semibold mb-6 block">Ready to Start?</span>
-          <h2 className="font-playfair text-5xl md:text-7xl tracking-tight mb-8 max-w-3xl mx-auto">
-            Let's Build Your Perfect Packaging.
-          </h2>
+          <h2 className="font-playfair text-5xl md:text-7xl tracking-tight mb-8 max-w-3xl mx-auto">Let's Build Your Perfect Packaging.</h2>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/contact" className="btn-primary">Get a Free Quote</Link>
-            <a href="https://wa.me/8613801514296" target="_blank" rel="noopener noreferrer" className="btn-white flex items-center justify-center gap-2">
-              <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-              </svg>
-              WhatsApp Us
-            </a>
+            <a href="https://wa.me/8613801514296" target="_blank" rel="noopener noreferrer" className="btn-white flex items-center justify-center gap-2">WhatsApp Us</a>
           </div>
         </FadeIn>
       </section>
 
       <Footer />
       <FloatingCTA />
-
-      {/* FAQ JSON-LD Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: faqs.map((f) => ({
-              "@type": "Question",
-              name: f.q,
-              acceptedAnswer: { "@type": "Answer", text: f.a },
-            })),
-          }),
-        }}
-      />
     </main>
   );
 }
