@@ -1,20 +1,16 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* Brand palette */
   --color-brand-white:      #FFFFFF;
   --color-brand-sage:       #A3B18A;
   --color-brand-sage-light: #C8D5B9;
   --color-brand-sage-dark:  #7A8F6A;
   --color-brand-grey:       #808080;
-  --color-brand-grey-light: #F5F5F3;
-  --color-brand-grey-mid:   #D4D4D4;
+  --color-brand-grey-light: #F7F6F4;
+  --color-brand-grey-mid:   #D4D4D0;
   --color-brand-black:      #1A1A1A;
+  --color-brand-dark:       #262626;
   --color-brand-gold:       #C5A059;
-
-  /* Typography */
-  --font-montserrat: var(--font-montserrat);
-  --font-playfair:   var(--font-playfair);
 }
 
 :root {
@@ -22,13 +18,9 @@
   --foreground: #1A1A1A;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   background: var(--background);
@@ -41,59 +33,69 @@ body {
 .font-playfair {
   font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
 }
-
 .font-montserrat {
   font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
 }
 
-/* Liquid Glass utility */
+/* ── Liquid Glass ── */
 .glass {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255,255,255,0.12);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255,255,255,0.25);
 }
-
 .glass-dark {
-  background: rgba(0, 0, 0, 0.18);
+  background: rgba(0,0,0,0.18);
   backdrop-filter: blur(24px) saturate(160%);
   -webkit-backdrop-filter: blur(24px) saturate(160%);
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255,255,255,0.15);
 }
 
-.glass-sage {
-  background: rgba(163, 177, 138, 0.15);
-  backdrop-filter: blur(16px) saturate(150%);
-  -webkit-backdrop-filter: blur(16px) saturate(150%);
-  border: 1px solid rgba(163, 177, 138, 0.3);
-}
-
-/* Button variants */
+/* ── Buttons ── */
 .btn-primary {
-  @apply px-8 py-3 bg-brand-sage text-white hover:bg-brand-sage-dark
-         transition-colors duration-300 uppercase tracking-widest text-xs font-semibold;
+  @apply inline-flex items-center px-8 py-3 bg-brand-sage text-white
+         hover:bg-brand-sage-dark transition-colors duration-300
+         uppercase tracking-widest text-xs font-semibold;
 }
-
 .btn-outline {
-  @apply px-8 py-3 border border-brand-sage text-brand-sage hover:bg-brand-sage hover:text-white
+  @apply inline-flex items-center px-8 py-3 border border-brand-black text-brand-black
+         hover:bg-brand-black hover:text-white
          transition-colors duration-300 uppercase tracking-widest text-xs font-semibold;
 }
-
+.btn-outline-sage {
+  @apply inline-flex items-center px-8 py-3 border border-brand-sage text-brand-sage
+         hover:bg-brand-sage hover:text-white
+         transition-colors duration-300 uppercase tracking-widest text-xs font-semibold;
+}
 .btn-white {
-  @apply px-8 py-3 bg-white text-brand-black hover:bg-brand-grey-light
+  @apply inline-flex items-center px-8 py-3 bg-white text-brand-black
+         hover:bg-brand-grey-light
          transition-colors duration-300 uppercase tracking-widest text-xs font-semibold;
 }
 
-/* Section helpers */
+/* ── Section typography (packageeco style) ── */
 .section-label {
-  @apply text-brand-sage uppercase tracking-[0.4em] text-sm font-semibold mb-5 block;
+  @apply text-brand-sage uppercase tracking-[0.4em] text-xs font-semibold mb-3 block;
 }
-
+.section-eyebrow {
+  @apply text-brand-grey uppercase tracking-[0.3em] text-xs font-medium mb-4 block;
+}
+/* H1-level section title */
 .section-title {
-  @apply font-playfair text-5xl md:text-7xl tracking-tight leading-tight;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+/* H2-level section subtitle */
+.section-subtitle {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
 }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #f5f5f3; }
-::-webkit-scrollbar-thumb { background: #A3B18A; border-radius: 3px; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #f7f6f4; }
+::-webkit-scrollbar-thumb { background: #A3B18A; border-radius: 2px; }
