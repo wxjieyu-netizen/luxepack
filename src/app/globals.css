@@ -86,11 +86,11 @@ body {
 
 /* Section helpers */
 .section-label {
-  @apply text-brand-sage uppercase tracking-[0.4em] text-xs font-semibold mb-4 block;
+  @apply text-brand-sage uppercase tracking-[0.4em] text-sm font-semibold mb-5 block;
 }
 
 .section-title {
-  @apply font-playfair text-4xl md:text-5xl tracking-tight leading-tight;
+  @apply font-playfair text-5xl md:text-7xl tracking-tight leading-tight;
 }
 
 /* Scrollbar */

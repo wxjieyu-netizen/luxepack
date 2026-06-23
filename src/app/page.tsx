@@ -464,7 +464,7 @@ export default function Home() {
       <section className="py-24 px-6 bg-brand-black text-white text-center">
         <FadeIn>
           <span className="text-brand-sage uppercase tracking-[0.4em] text-xs font-semibold mb-6 block">Ready to Start?</span>
-          <h2 className="font-playfair text-4xl md:text-6xl tracking-tight mb-8 max-w-3xl mx-auto">
+          <h2 className="font-playfair text-5xl md:text-7xl tracking-tight mb-8 max-w-3xl mx-auto">
             Let's Build Your Perfect Packaging.
           </h2>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
