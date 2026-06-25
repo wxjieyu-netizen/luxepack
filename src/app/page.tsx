@@ -529,6 +529,7 @@ export default function Home() {
 
       <Footer />
       <FloatingCTA />
+      <ExitIntentPopup />
 
       <script
         type="application/ld+json"
@@ -541,6 +542,18 @@ export default function Home() {
               name: f.question,
               acceptedAnswer: { "@type": "Answer", text: f.answer },
             })),
+          }),
+        }}
+      />
+    </main>
+  );
+}
+}
+      />
+    </main>
+  );
+}
+})),
           }),
         }}
       />
